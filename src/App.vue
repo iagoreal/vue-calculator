@@ -1,47 +1,42 @@
+<template>
+  <div id="app">
+    <input type="text" v-model="display" readonly>
+    <div class="buttons">
+      <button v-for="button in buttons" :key="button" @click="addToDisplay(button)">{{ button }}</button>
+      <button @click="clearDisplay">C</button>
+      <button @click="calculate">=</button>
+    </div>
+  </div>
+</template>
+
 <script>
-  export default {
-    data(){
-      return {
-      currentDisplay: "",
+export default {
+  data() {
+    return {
+      display: "",
       buttons: ["1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "*", "0", ".", "/"]
-      }
+    }
+  },
+  methods: {
+    addToDisplay(button) {
+      this.display += button;
     },
-    methods: {
-      addToDisplay(button) {
-      this.currentDisplay += button;
-    },
-    clearcurrenteDisplay() {
-      this.currentDisplay = "";
+    clearDisplay() {
+      this.display = "";
     },
     calculate() {
       try {
-        this.currentDisplay = eval(this.currentDisplay);
+       
+        const result = Function('"use strict"; return (' + this.display + ')')();
+        this.display = String(result);
       } catch (error) {
-        this.currentDisplay = "Error";
-        }
+        this.display = "Error";
       }
     }
   }
-
+}
 </script>
 
-<template>
-  <input type="text" v-model="currentDisplay" readonly> 
-  <div class="buttons">
-    <button v-for="button in buttons" :key="button" @click="addToDisplay(button)">{{ button}}</button>
-    <button @click="clearcurrenteDisplay">C</button>
-    <button @click="calculate">=</button>
-  </div>
-  </template>
-
 <style>
-button{
-  width: 20em;
-  height: 5em;
-}
 
-currentDisplay{
-  width: 20em;
-  height: 5em;
-}
 </style>
