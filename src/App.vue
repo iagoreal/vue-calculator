@@ -1,42 +1,47 @@
 <template>
-  <div id="app">
-    <input type="text" v-model="display" readonly>
+  <div id="App">
+    <input type="text" :value="display" readonly>
     <div class="buttons">
-      <button v-for="button in buttons" :key="button" @click="addToDisplay(button)">{{ button }}</button>
-      <button @click="clearDisplay">C</button>
-      <button @click="calculate">=</button>
+      <button v-for="button in buttons" :key="button" @click="onButtonClick(button)">
+        {{ button }}
+      </button>
+      <button @click="onClearDisplay">C</button>
+      <button @click="onCalculate">=</button>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { initialState, handleButtonClick, clearDisplay, calculate } from './calculator';
+
+export default defineComponent({
+  name: 'Calculator',
   data() {
     return {
-      display: "",
+      state: { ...initialState },
       buttons: ["1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "*", "0", ".", "/"]
+    };
+  },
+  computed: {
+    display(): string {
+      return this.state.display;
     }
   },
   methods: {
-    addToDisplay(button) {
-      this.display += button;
+    onButtonClick(button: string) {
+      this.state = handleButtonClick(this.state, button);
     },
-    clearDisplay() {
-      this.display = "";
+    onClearDisplay() {
+      this.state = clearDisplay();
     },
-    calculate() {
-      try {
-       
-        const result = Function('"use strict"; return (' + this.display + ')')();
-        this.display = String(result);
-      } catch (error) {
-        this.display = "Error";
-      }
+    onCalculate() {
+      this.state = calculate(this.state);
     }
   }
-}
+});
 </script>
 
-<style>
+<style scoped>
 
 </style>
