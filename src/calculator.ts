@@ -9,6 +9,7 @@ export interface CalculatorState {
   
   export const initialState: CalculatorState = {
     display: "0",
+    
     previousValue: "",
     currentValue: null,
     currentOperator: null,
@@ -74,6 +75,7 @@ export interface CalculatorState {
         return value2;
     }
   }
+  
   
   function setOperator(state: CalculatorState, operator: string): CalculatorState {
     if (state.currentValue === null) {
