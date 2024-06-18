@@ -1,12 +1,13 @@
 <template>
-    <div id="App">
+  <div id="App">
     <input type="text" :value="display" readonly>
     <div class="buttons">
-      <button v-for="button in buttons" :key="button" @click="onButtonClick(button)">
+      <button v-for="button in buttons" :key="button" @click="onButtonClick(button)"
+              :class="{ 'zero': button === '0', 'equal': button === '=' }">
         {{ button }}
       </button>
       <button @click="onClearDisplay">C</button>
-      <button @click="onCalculate">=</button>
+      <button @click="onCalculate" class="equal">=</button>
     </div>
   </div>
 </template>
@@ -109,5 +110,14 @@ button:nth-child(4n-3) {
   width: 100%;
 }
 
+/* Especificamente para o botão zero (0) */
+button.zero {
+  grid-column: span 2;
+}
+
+/* Especificamente para o botão de igual (=) */
+button.equal {
+  grid-column: span 3;
+}
 
 </style>
